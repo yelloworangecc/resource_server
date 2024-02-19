@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ serial }} - {{ episode }}</title>
+  </head>
+  <body>
+    <video id="video" controls></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+      var video = document.getElementById('video');
+      source = '{{ '/videos/{0}/{1}/playlist.m3u8'.format(serial,episode) }}'
+      alert(source)
+      if (video.canPlayType('application/vnd.apple.mpegurl'))
+      {
+          video.src = source;
+      }
+      else if (Hls.isSupported()) 
+      {
+          var hls = new Hls({
+              debug: false,
+          });
+          hls.loadSource(source);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+              video.play();
+          });
+      }
+    </script> 
+  </body>
+</html>
